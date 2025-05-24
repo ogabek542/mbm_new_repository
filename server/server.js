@@ -6,6 +6,8 @@ const authRouter = require("./routes/auth/auth-routes");
 const adminProductsRouter = require("./routes/admin/products-routes");
 const adminOrderRouter = require("./routes/admin/order-routes");
 
+require("dotenv").config()
+
 const shopProductsRouter = require("./routes/shop/products-routes");
 const shopCartRouter = require("./routes/shop/cart-routes");
 const shopAddressRouter = require("./routes/shop/address-routes");
@@ -18,17 +20,17 @@ const commonFeatureRouter = require("./routes/common/feature-routes");
 //create a separate file for this and then import/use that file here
 
 mongoose
-  .connect("mongodb+srv://otaxonovo22222:BGK4un8KosXWABc0@cluster0.7yfsv.mongodb.net/")
+  .connect(process.env.mongoDBURL)
   .then(() => console.log("MongoDB connected"))
   .catch((error) => console.log(error));
 
 const app = express();
-const PORT = process.env.PORT || 5000 || 5174;
-
+const PORT = process.env.PORT ;
+console.log(process.env.origin);
 app.use(
   cors({
     // origin: "http://localhost:5173",
-    origin: "http://localhost:5174",
+    origin: process.env.origin,
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
       "Content-Type",

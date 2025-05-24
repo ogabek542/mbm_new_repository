@@ -128,7 +128,7 @@ ${orderData.cartItems.map(item => `- ${item.title} x ${item.quantity} = $${item.
         toast({ title: "Order created successfully", variant: "success" });
   
         // ✅ NEW: Clear cart from backend after order success
-        await axios.delete(`http://localhost:5000/api/shop/cart/clear/${user.id}`);
+        await axios.delete(import.meta.env.VITE_API_BASE_URL + `/api/shop/cart/clear/${user.id}`);
       } else {
         toast({ title: t("order_created_in_telegram_but_backend_failed"), variant: "destructive" });
       }

@@ -10,7 +10,7 @@ import shopOrderSlice from "./shop/order-slice";
 import shopSearchSlice from "./shop/search-slice";
 import shopReviewSlice from "./shop/review-slice";
 import commonFeatureSlice from "./common-slice";
-
+console.log(import.meta.env.VITE_API_BASE_URL);
 const store = configureStore({
   reducer: {
     auth: authReducer,
