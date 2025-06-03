@@ -34,22 +34,22 @@ const app = express();
 const PORT = process.env.PORT;
 
 // CORS configuration
-app.use(
-  cors({
-    // origin: process.env.origin,
-    // origin: ["http://localhost:5173", "*"],
-    origin: ["http://localhost:5173", "*"],
-    methods: ["GET", "POST", "DELETE", "PUT", "PATCH", "OPTIONS"],
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "Cache-Control",
-      "Expires",
-      "Pragma",
-    ],
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     // origin: process.env.origin,
+//     // origin: ["http://localhost:5173", "*"],
+//     origin: ["http://localhost:5173", "*"],
+//     methods: ["GET", "POST", "DELETE", "PUT", "PATCH", "OPTIONS"],
+//     allowedHeaders: [
+//       "Content-Type",
+//       "Authorization",
+//       "Cache-Control",
+//       "Expires",
+//       "Pragma",
+//     ],
+//     credentials: true,
+//   })
+// );
 
 // app.options(
 //   "*",
@@ -60,19 +60,27 @@ app.use(
 //   })
 // );
 
-// app.options(
-//   "*",
-//   cors({
-//     origin: function (origin, callback) {
-//       if (!origin || allowedOrigins.includes(origin)) {
-//         callback(null, true);
-//       } else {
-//         callback(new Error("Not allowed by CORS"));
-//       }
-//     },
-//     credentials: true,
-//   })
-// );
+const corsOption = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, origin || allowedOrigins[0]);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ["GET", "POST", "DELETE", "PUT", "PATCH", "OPTIONS"],
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "Cache-Control",
+    "Expires",
+    "Pragma",
+  ],
+  credentials: true,
+};
+
+app.use(cors(corsOption));
+app.options("*", cors(corsOption));
 
 app.use(cookieParser());
 app.use(express.json());
