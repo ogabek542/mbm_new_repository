@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Route, Routes, Navigate } from "react-router-dom"; 
+import { Route, Routes, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "./i18n/i18n";
 import "./App.css";
@@ -26,7 +26,9 @@ import { checkAuth } from "./store/auth-slice";
 import { Skeleton } from "./components/ui/skeleton";
 
 function App() {
-  const { user, isAuthenticated, isLoading } = useSelector((state) => state.auth);
+  const { user, isAuthenticated, isLoading } = useSelector(
+    (state) => state.auth
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -40,14 +42,17 @@ function App() {
   return (
     <div className="flex flex-col overflow-hidden bg-white">
       <Routes>
-
         {/* Redirect "/" to "/shop/home" */}
         <Route path="/" element={<Navigate to="/shop/home" replace />} />
 
         {/* Auth Section */}
         <Route
           path="/auth"
-          element={<CheckAuth isAuthenticated={isAuthenticated} user={user}><AuthLayout /></CheckAuth>}
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <AuthLayout />
+            </CheckAuth>
+          }
         >
           <Route path="login" element={<AuthLogin />} />
           <Route path="register" element={<AuthRegister />} />
@@ -56,7 +61,11 @@ function App() {
         {/* Admin Section */}
         <Route
           path="/admin"
-          element={<CheckAuth isAuthenticated={isAuthenticated} user={user}><AdminLayout /></CheckAuth>}
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <AdminLayout />
+            </CheckAuth>
+          }
         >
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="products" element={<AdminPrdoducts />} />
@@ -78,7 +87,6 @@ function App() {
         {/* Other Routes */}
         <Route path="/unauth-page" element={<UnauthPage />} />
         <Route path="*" element={<NotFound />} />
-
       </Routes>
     </div>
   );

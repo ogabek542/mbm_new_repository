@@ -13,7 +13,6 @@ import AddressCard from "./address-card";
 import { useToast } from "../ui/use-toast";
 import { useTranslation } from "react-i18next";
 
-
 const initialAddressFormData = {
   address: "",
   city: "",
@@ -30,7 +29,6 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
   const { addressList } = useSelector((state) => state.shopAddress);
   const { toast } = useToast();
   const { t } = useTranslation();
-
 
   function handleManageAddress(event) {
     event.preventDefault();
@@ -132,7 +130,9 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
       </div>
       <CardHeader>
         <CardTitle>
-          {currentEditedId !== null ? t("edit_address_text") : t("add_new_address_text")}
+          {currentEditedId !== null
+            ? t("edit_address_text")
+            : t("add_new_address_text")}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">

@@ -3,10 +3,9 @@ import { useToast } from "@/components/ui/use-toast";
 import { useLoginFormControls } from "@/config";
 import { loginUser } from "@/store/auth-slice";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-
 
 const initialState = {
   email: "",
@@ -16,26 +15,37 @@ const initialState = {
 function AuthLogin() {
   const [formData, setFormData] = useState(initialState);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { toast } = useToast();
   const { t } = useTranslation();
+  const { isLoading, error } = useSelector((state) => state.auth);
 
-
-  function onSubmit(event) {
+  async function onSubmit(event) {
     event.preventDefault();
-
-    dispatch(loginUser(formData)).then((data) => {
-      if (data?.payload?.success) {
+    try {
+      const result = await dispatch(loginUser(formData)).unwrap();
+      if (result.success) {
         toast({
-          title: data?.payload?.message,
+          title: result.message || "Login successful",
         });
+        if (result.user?.role === "admin") {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/shop/home");
+        }
       } else {
         toast({
-          title: data?.payload?.message,
+          title: result.message || "Login failed",
           variant: "destructive",
         });
       }
-    });
-  };
+    } catch (error) {
+      toast({
+        title: error.message || "Login failed",
+        variant: "destructive",
+      });
+    }
+  }
 
   return (
     <div className="mx-auto w-full max-w-md space-y-6">
@@ -59,7 +69,11 @@ function AuthLogin() {
         formData={formData}
         setFormData={setFormData}
         onSubmit={onSubmit}
+        isLoading={isLoading}
       />
+      {error && (
+        <p className="text-sm text-red-500 text-center mt-2">{error}</p>
+      )}
     </div>
   );
 }
