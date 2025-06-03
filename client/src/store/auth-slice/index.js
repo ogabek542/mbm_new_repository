@@ -16,7 +16,9 @@ export const registerUser = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.error("Registration error:", error);
-      return rejectWithValue(error.response?.data || { message: error.message });
+      return rejectWithValue(
+        error.response?.data || { message: error.message }
+      );
     }
   }
 );
@@ -29,7 +31,9 @@ export const loginUser = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.error("Login error:", error);
-      return rejectWithValue(error.response?.data || { message: error.message });
+      return rejectWithValue(
+        error.response?.data || { message: error.message }
+      );
     }
   }
 );
@@ -42,7 +46,9 @@ export const logoutUser = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.error("Logout error:", error);
-      return rejectWithValue(error.response?.data || { message: error.message });
+      return rejectWithValue(
+        error.response?.data || { message: error.message }
+      );
     }
   }
 );
@@ -51,11 +57,13 @@ export const checkAuth = createAsyncThunk(
   "auth/checkauth",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.get("/api/auth/check-auth1");
+      const response = await api.get("/api/auth/check-auth");
       return response.data;
     } catch (error) {
       console.error("Check auth error:", error);
-      return rejectWithValue(error.response?.data || { message: error.message });
+      return rejectWithValue(
+        error.response?.data || { message: error.message }
+      );
     }
   }
 );
