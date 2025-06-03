@@ -3,7 +3,7 @@ import api from "../../config/axios";
 
 const initialState = {
   isAuthenticated: false,
-  isLoading: true,
+  isLoading: false,
   user: null,
   error: null,
 };
@@ -68,6 +68,14 @@ export const checkAuth = createAsyncThunk(
   }
 );
 
+export const loading = (data = false) => {
+  // if (data) {
+  //   state.isLoading = data;
+  // } else {
+  //   state.isLoading = false;
+  // }
+};
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -79,9 +87,15 @@ const authSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
+    load: (state) => {
+      state.isLoading = false;
+    },
   },
   extraReducers: (builder) => {
     builder
+      // .addCase(loading, (state) => {
+      //   state.isLoading = false;
+      // })
       // Register cases
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
@@ -146,5 +160,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUser, clearError } = authSlice.actions;
+export const { setUser, clearError, load } = authSlice.actions;
 export default authSlice.reducer;

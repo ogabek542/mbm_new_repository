@@ -19,6 +19,12 @@ const commonFeatureRouter = require("./routes/common/feature-routes");
 //create a database connection -> u can also
 //create a separate file for this and then import/use that file here
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://www.mbmbusiness.uz",
+  "https://mbm-new-repository.vercel.app",
+];
+
 mongoose
   .connect(process.env.mongoDBURL)
   .then(() => console.log("MongoDB connected"))
@@ -30,8 +36,15 @@ const PORT = process.env.PORT;
 // CORS configuration
 app.use(
   cors({
-    origin: process.env.origin,
-    // origin: "http://localhost:5173",
+    // origin: process.env.origin,
+    // origin: ["http://localhost:5173", "*"],
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     methods: ["GET", "POST", "DELETE", "PUT", "PATCH", "OPTIONS"],
     allowedHeaders: [
       "Content-Type",
@@ -44,11 +57,25 @@ app.use(
   })
 );
 
+// app.options(
+//   "*",
+//   cors({
+//     origin: process.env.origin,
+//     origin: "http://localhost:5173",
+//     credentials: true,
+//   })
+// );
+
 app.options(
   "*",
   cors({
-    //origin: process.env.origin,
-    origin: "http://localhost:5173",
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );

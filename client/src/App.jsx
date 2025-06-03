@@ -22,7 +22,7 @@ import ConnectionPage from "./pages/shopping-view/connection";
 import NotFound from "./pages/not-found";
 import UnauthPage from "./pages/unauth-page";
 import CheckAuth from "./components/common/check-auth";
-import { checkAuth } from "./store/auth-slice";
+import { checkAuth, loading } from "./store/auth-slice";
 import { Skeleton } from "./components/ui/skeleton";
 
 function App() {
@@ -32,7 +32,12 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(checkAuth());
+    if (user) {
+      dispatch(checkAuth());
+    } 
+    // else {
+    //   dispatch(loading());
+    // }
   }, [dispatch]);
 
   if (isLoading) {
