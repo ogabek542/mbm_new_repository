@@ -61,7 +61,7 @@ const PORT = process.env.PORT;
 // );
 
 const corsOption = {
-  origin: function (origin, callback) {
+  origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, origin || allowedOrigins[0]);
     } else {
