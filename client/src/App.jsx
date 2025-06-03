@@ -34,10 +34,9 @@ function App() {
   useEffect(() => {
     if (user) {
       dispatch(checkAuth());
-    } 
-    // else {
-    //   dispatch(loading());
-    // }
+    } else {
+      dispatch(loading());
+    }
   }, [dispatch]);
 
   if (isLoading) {

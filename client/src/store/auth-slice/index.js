@@ -1,9 +1,9 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../config/axios";
 
 const initialState = {
   isAuthenticated: false,
-  isLoading: false,
+  isLoading: true,
   user: null,
   error: null,
 };
@@ -68,13 +68,7 @@ export const checkAuth = createAsyncThunk(
   }
 );
 
-export const loading = (data = false) => {
-  // if (data) {
-  //   state.isLoading = data;
-  // } else {
-  //   state.isLoading = false;
-  // }
-};
+export const loading = createAction("loading");
 
 const authSlice = createSlice({
   name: "auth",
@@ -93,9 +87,9 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // .addCase(loading, (state) => {
-      //   state.isLoading = false;
-      // })
+      .addCase(loading, (state) => {
+        state.isLoading = !state.isLoading;
+      })
       // Register cases
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
