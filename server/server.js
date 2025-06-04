@@ -19,11 +19,7 @@ const commonFeatureRouter = require("./routes/common/feature-routes");
 //create a database connection -> u can also
 //create a separate file for this and then import/use that file here
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://www.mbmbusiness.uz",
-  "https://mbm-new-repository.vercel.app",
-];
+const allowedOrigins = ["http://localhost:5173", "https://www.mbmbusiness.uz"];
 
 mongoose
   .connect(process.env.mongoDBURL)
@@ -79,8 +75,20 @@ const corsOption = {
   credentials: true,
 };
 
-app.use(cors(corsOption));
-app.options("*", cors(corsOption));
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
+
+app.options(
+  "*",
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
 
 app.use(cookieParser());
 app.use(express.json());
